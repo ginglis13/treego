@@ -2,6 +2,8 @@
 
 An implementation of the Unix [tree](https://linux.die.net/man/1/tree) command in Go.
 
+Looking to practice Go a bit more.
+
 **Current WIP**
 
 ### TODO
