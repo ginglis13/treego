@@ -45,7 +45,7 @@ func tree(root string, options Options, level int) {
 			continue
 		}
 
-		if !finfo.isDir() && options.dirOnly {
+		if !finfo.IsDir() && options.dirOnly {
 			continue
 		}
 
