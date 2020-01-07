@@ -65,7 +65,7 @@ func tree(root string, level int) {
 
 
 func main() {
-	root := os.Args[0]
+	root := os.Args[1]
 	fmt.Println(root)
 	tree(root, 0)
 }
