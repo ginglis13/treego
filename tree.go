@@ -8,33 +8,26 @@
 */
 
 
-/* TODO
-
-	1. Flags - some I'm gonna do:
-		--help
-		-a 			All files are listed
-		-d 			List directories only
-		-f          Print full path prefixes
-		-i          Do not print any indendation prefixes
-		-s          Print size of each file
-
-	There's a bunch more, this is it for now
-
-	2. Final report (X directories, X files)
-
-*/
-
 package main
 
 
 import (
 	"fmt"
 	"io/ioutil"
-	"os"
+	"flag"
 )
 
 
-func tree(root string, level int) {
+type Options struct {
+	listAll bool
+	dirOnly bool
+	fullPath bool
+	noIndent bool
+	listSz bool
+}
+
+
+func tree(root string, options Options, level int) {
 	finfos, err := ioutil.ReadDir(root)
 
 	if err != nil {
@@ -48,24 +41,52 @@ func tree(root string, level int) {
 		}
 
 		ind := ""
-		for i:=0; i<level; i++ {
-			ind = fmt.Sprintf("%s%s", ind, "    ")
+		if !options.noIndent {
+			branch := "|---"
+			for i:=0; i<level; i++ {
+				ind = fmt.Sprintf("%s%s", ind, "    ")
+			}
+			ind = fmt.Sprintf("%s%s", ind, branch)
 		}
 
 		path := fmt.Sprintf("%s/%s", root, finfo.Name())
-		treepath  := fmt.Sprintf("%s|---%s", ind, finfo.Name())
+		treepath  := fmt.Sprintf("%s%s", ind, finfo.Name())
 
 		fmt.Println(treepath)
 
 		if finfo.IsDir() {
-			tree(path, level + 1)
+			tree(path, options, level + 1)
 		}
 	}
 }
 
 
 func main() {
-	root := os.Args[1]
-	fmt.Println(root)
-	tree(root, 0)
+
+	/* Parse Args */
+	listAll  := flag.Bool("a", false, "All files are listed")
+	dirOnly  := flag.Bool("d", false, "List directories only")
+	fullPath := flag.Bool("f", false, "Print full path prefixes")
+	noIndent := flag.Bool("i", false, "Do not print any indentation prefixes")
+	listSz   := flag.Bool("s", false, "Print size of each file")
+
+	flag.Parse()
+
+	options := Options { *listAll, *dirOnly, *fullPath, *noIndent, *listSz }
+
+	dirs := flag.Args()
+	arglen := len(dirs)
+
+	if arglen == 0 {
+		/* Default to current directory */
+		fmt.Println(".")
+		tree(".", options, 0)
+
+	} else {
+		/* Allow user to supply list of paths */
+		for _, root := range dirs {
+			fmt.Println(root)
+			tree(root, options, 0)
+		}
+	}
 }
