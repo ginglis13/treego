@@ -11,16 +11,19 @@ Looking to practice Go a bit more.
 
 1. Flags - some I'm gonna do:
 
-```	--help
+```
 	-a 	    All files are listed
 	-d 	    List directories only
-	-f          Print full path prefixes
-	-i          Do not print any indendation prefixes
-	-s          Print size of each file
+	-f      Print full path prefixes
+	-i      Do not print any indendation prefixes
+	-s      Print size of each file
 ```
 
 There's a bunch more, this is it for now
 
 2. Final report (X directories, X files)
+
+3. Show/expand symlinks (i.e., fakefile.txt -> /usr/share/fakefile.txt)
+
 
 I hope to write this in Rust and maybe C eventually.
