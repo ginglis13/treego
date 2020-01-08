@@ -27,7 +27,12 @@ type Options struct {
 }
 
 
-func tree(root string, options *Options, level int) {
+type Report struct {
+	dirs int
+	files int
+}
+
+func tree(root string, options *Options, report *Report, level int) {
 	finfos, err := ioutil.ReadDir(root)
 
 	if err != nil {
@@ -82,7 +87,10 @@ func tree(root string, options *Options, level int) {
 
 		/* Recurse through subdirectories */
 		if finfo.IsDir() {
-			tree(path, options, level + 1)
+			report.dirs++
+			tree(path, options, report, level + 1)
+		} else {
+			report.files++
 		}
 	}
 }
@@ -100,6 +108,7 @@ func main() {
 	flag.Parse()
 
 	options := Options { *listAll, *dirOnly, *fullPath, *noIndent, *listSz }
+	report := Report { 0, 0 }
 
 	dirs := flag.Args()
 	arglen := len(dirs)
@@ -107,13 +116,23 @@ func main() {
 	if arglen == 0 {
 		/* Default to current directory */
 		fmt.Println(".")
-		tree(".", &options, 0)
+		tree(".", &options, &report, 0)
 
 	} else {
 		/* Allow user to supply list of paths */
 		for _, root := range dirs {
 			fmt.Println(root)
-			tree(root, &options, 0)
+			tree(root, &options, &report, 0)
 		}
+	}
+
+	if report.dirs > 0 {
+		if report.files > 0 {
+			fmt.Printf("\n%v directories, %v files\n", report.dirs, report.files)
+		} else {
+			fmt.Printf("\n%v directories\n", report.dirs)
+		}
+	} else if report.files > 0 {
+		fmt.Printf("\n%v files\n", report.files)
 	}
 }
