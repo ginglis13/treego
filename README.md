@@ -2,18 +2,14 @@
 
 An implementation of the Unix [tree](https://linux.die.net/man/1/tree) command in Go.
 
-Looking to practice Go a bit more.
-
-**Current WIP**
+Just a way of practicing Go a bit more.
 
 ![screenshot](https://yld.me/raw/baBn.png)
 
-### TODO
-
-
-1. Flags - some I'm gonna do:
+### Options implemented
 
 ```
+	--help
 	-a 	    All files are listed
 	-d 	    List directories only
 	-f      Print full path prefixes
@@ -21,11 +17,12 @@ Looking to practice Go a bit more.
 	-s      Print size of each file
 ```
 
-There's a bunch more, this is it for now
+### TODO
 
-2. Final report (X directories, X files)
+1. There's a bunch more flags listed on the man page. I might add some more simple ones like checking uid or gid. I
+also need to fix the size flag, currently is not formatted properly.
 
-3. Show/expand symlinks (i.e., fakefile.txt -> /usr/share/fakefile.txt)
+2. Show/expand symlinks (i.e., fakefile.txt -> /usr/share/fakefile.txt)
 
 
 I hope to write this in Rust and maybe C eventually.
