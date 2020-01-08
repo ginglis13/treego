@@ -27,11 +27,11 @@ type Options struct {
 }
 
 
-func tree(root string, options Options, level int) {
+func tree(root string, options *Options, level int) {
 	finfos, err := ioutil.ReadDir(root)
 
 	if err != nil {
-		fmt.Println(err)
+		fmt.Println("[error opening dir]") // TODO: output on same line as dir
 		return
 	}
 
@@ -53,7 +53,7 @@ func tree(root string, options Options, level int) {
 		if !options.noIndent {
 			branch := "|---"
 			for i:=0; i<level; i++ {
-				ind = fmt.Sprintf("%s%s", ind, "    ")
+				ind = fmt.Sprintf("%s%s", ind, "|   ")
 			}
 			ind = fmt.Sprintf("%s%s", ind, branch)
 		}
@@ -91,13 +91,13 @@ func main() {
 	if arglen == 0 {
 		/* Default to current directory */
 		fmt.Println(".")
-		tree(".", options, 0)
+		tree(".", &options, 0)
 
 	} else {
 		/* Allow user to supply list of paths */
 		for _, root := range dirs {
 			fmt.Println(root)
-			tree(root, options, 0)
+			tree(root, &options, 0)
 		}
 	}
 }
