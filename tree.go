@@ -70,17 +70,18 @@ func tree(root string, options *Options, report *Report, level int) {
 
 		/* Construct paths for recursion and printing */
 		path := fmt.Sprintf("%s/%s", root, finfo.Name())
-		treepath  := fmt.Sprintf("%s%s", ind, finfo.Name())
+		var treepath string
 
-		// TODO: fix formatting on listing size
 		if options.listSz {
 			szstr := fmt.Sprintf("[%v]", finfo.Size())
-			treepath = fmt.Sprintf("%s %s  %s", ind, szstr, treepath)
+			treepath = fmt.Sprintf("%s  %s", szstr, treepath)
 		}
 
 		if options.fullPath {
-			treepath = fmt.Sprintf("%s%s", ind, path)
+			treepath = fmt.Sprintf("%s", path)
 		}
+
+		treepath = fmt.Sprintf("%s%s%s", ind, treepath, finfo.Name())
 
 
 		fmt.Println(treepath)

@@ -19,8 +19,7 @@ Just a way of practicing Go a bit more.
 
 ### TODO
 
-1. There's a bunch more flags listed on the man page. I might add some more simple ones like checking uid or gid. I
-also need to fix the size flag, currently is not formatted properly.
+1. There's a bunch more flags listed on the man page. I might add some more simple ones like checking uid or gid.
 
 2. Show/expand symlinks (i.e., fakefile.txt -> /usr/share/fakefile.txt)
 
