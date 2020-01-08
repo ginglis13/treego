@@ -35,7 +35,7 @@ func tree(root string, options *Options, level int) {
 		return
 	}
 
-	for _, finfo := range finfos {
+	for fnum, finfo := range finfos {
 		/* Check options */
 		if finfo.Name() == "." || finfo.Name() == ".." {
 			continue
@@ -51,16 +51,32 @@ func tree(root string, options *Options, level int) {
 
 		ind := ""
 		if !options.noIndent {
-			branch := "|---"
+
+			branch := "├── "
+			if fnum == len(finfos) - 1 {
+				branch = "└── "
+			}
+
 			for i:=0; i<level; i++ {
-				ind = fmt.Sprintf("%s%s", ind, "|   ")
+				ind = fmt.Sprintf("%s%s", ind, "│   ")
 			}
 			ind = fmt.Sprintf("%s%s", ind, branch)
 		}
 
-		/* Constructs path for recursion and printing */
+		/* Construct paths for recursion and printing */
 		path := fmt.Sprintf("%s/%s", root, finfo.Name())
 		treepath  := fmt.Sprintf("%s%s", ind, finfo.Name())
+
+		if options.listSz {
+			fmt.Println(finfo.Size())
+			szstr := fmt.Sprintf("[%v]", finfo.Size())
+			treepath = fmt.Sprintf("%s %s  %s", ind, szstr, treepath)
+		}
+
+		if options.fullPath {
+			treepath = fmt.Sprintf("%s%s", ind, path)
+		}
+
 
 		fmt.Println(treepath)
 
@@ -76,8 +92,8 @@ func main() {
 
 	/* Parse Args */
 	listAll  := flag.Bool("a", false, "All files are listed")
-	dirOnly  := flag.Bool("d", false, "[TODO] List directories only")
-	fullPath := flag.Bool("f", false, "[TODO] Print full path prefixes")
+	dirOnly  := flag.Bool("d", false, "List directories only")
+	fullPath := flag.Bool("f", false, "Print full path prefixes")
 	noIndent := flag.Bool("i", false, "Do not print any indentation prefixes")
 	listSz   := flag.Bool("s", false, "[TODO] Print size of each file")
 
