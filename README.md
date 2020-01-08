@@ -10,11 +10,12 @@ Just a way of practicing Go a bit more.
 
 ```
 	--help
-	-a 	    All files are listed
-	-d 	    List directories only
-	-f      Print full path prefixes
-	-i      Do not print any indendation prefixes
-	-s      Print size of each file
+	-a 	    	All files are listed
+	-d 	    	List directories only
+	-f      	Print full path prefixes
+	-i      	Do not print any indendation prefixes
+	-s      	Print size of each file
+	-noreport 	Omit printing of report of files and dirs
 ```
 
 ### TODO
