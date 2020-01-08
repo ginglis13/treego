@@ -72,8 +72,8 @@ func tree(root string, options *Options, report *Report, level int) {
 		path := fmt.Sprintf("%s/%s", root, finfo.Name())
 		treepath  := fmt.Sprintf("%s%s", ind, finfo.Name())
 
+		// TODO: fix formatting on listing size
 		if options.listSz {
-			fmt.Println(finfo.Size())
 			szstr := fmt.Sprintf("[%v]", finfo.Size())
 			treepath = fmt.Sprintf("%s %s  %s", ind, szstr, treepath)
 		}
