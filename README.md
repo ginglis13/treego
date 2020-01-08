@@ -24,5 +24,6 @@ also need to fix the size flag, currently is not formatted properly.
 
 2. Show/expand symlinks (i.e., fakefile.txt -> /usr/share/fakefile.txt)
 
+3. Add colors?
 
 I hope to write this in Rust and maybe C eventually.
