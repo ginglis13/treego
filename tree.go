@@ -4,7 +4,6 @@
 	https://linux.die.net/man/1/tree
 
 	Gavin Inglis (ginglis)
-
 */
 
 
@@ -24,6 +23,7 @@ type Options struct {
 	fullPath bool
 	noIndent bool
 	listSz bool
+	noReport bool
 }
 
 
@@ -31,6 +31,7 @@ type Report struct {
 	dirs int
 	files int
 }
+
 
 func tree(root string, options *Options, report *Report, level int) {
 	finfos, err := ioutil.ReadDir(root)
@@ -58,7 +59,7 @@ func tree(root string, options *Options, report *Report, level int) {
 		if !options.noIndent {
 
 			branch := "├── "
-			if fnum == len(finfos) - 1 {
+			if fnum == len(finfos) - 1  || options.dirOnly {
 				branch = "└── "
 			}
 
@@ -83,11 +84,9 @@ func tree(root string, options *Options, report *Report, level int) {
 			treepath = fmt.Sprintf("%s%s%s", ind, treepath, finfo.Name())
 		}
 
-
-
 		fmt.Println(treepath)
 
-		/* Recurse through subdirectories */
+		/* Recurse through subdirectories and count for report */
 		if finfo.IsDir() {
 			report.dirs++
 			tree(path, options, report, level + 1)
@@ -106,10 +105,12 @@ func main() {
 	fullPath := flag.Bool("f", false, "Print full path prefixes")
 	noIndent := flag.Bool("i", false, "Do not print any indentation prefixes")
 	listSz   := flag.Bool("s", false, "Print size of each file")
+	// should be -- but that is a parse error in the flag pkg
+	noReport := flag.Bool("noreport", false, "Omit printing of file and directory report at the end of tree listing")
 
 	flag.Parse()
 
-	options := Options { *listAll, *dirOnly, *fullPath, *noIndent, *listSz }
+	options := Options { *listAll, *dirOnly, *fullPath, *noIndent, *listSz, *noReport }
 	report := Report { 0, 0 }
 
 	dirs := flag.Args()
@@ -128,13 +129,15 @@ func main() {
 		}
 	}
 
-	if report.dirs > 0 {
-		if report.files > 0 {
-			fmt.Printf("\n%v directories, %v files\n", report.dirs, report.files)
-		} else {
-			fmt.Printf("\n%v directories\n", report.dirs)
+	if !options.noReport {
+		if report.dirs > 0 {
+			if report.files > 0 {
+				fmt.Printf("\n%v directories, %v files\n", report.dirs, report.files)
+			} else {
+				fmt.Printf("\n%v directories\n", report.dirs)
+			}
+		} else if report.files > 0 {
+			fmt.Printf("\n%v files\n", report.files)
 		}
-	} else if report.files > 0 {
-		fmt.Printf("\n%v files\n", report.files)
 	}
 }
