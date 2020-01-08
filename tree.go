@@ -78,10 +78,11 @@ func tree(root string, options *Options, report *Report, level int) {
 		}
 
 		if options.fullPath {
-			treepath = fmt.Sprintf("%s", path)
+			treepath = fmt.Sprintf("%s%s%s", ind, treepath, path)
+		} else {
+			treepath = fmt.Sprintf("%s%s%s", ind, treepath, finfo.Name())
 		}
 
-		treepath = fmt.Sprintf("%s%s%s", ind, treepath, finfo.Name())
 
 
 		fmt.Println(treepath)
@@ -104,7 +105,7 @@ func main() {
 	dirOnly  := flag.Bool("d", false, "List directories only")
 	fullPath := flag.Bool("f", false, "Print full path prefixes")
 	noIndent := flag.Bool("i", false, "Do not print any indentation prefixes")
-	listSz   := flag.Bool("s", false, "[TODO] Print size of each file")
+	listSz   := flag.Bool("s", false, "Print size of each file")
 
 	flag.Parse()
 
